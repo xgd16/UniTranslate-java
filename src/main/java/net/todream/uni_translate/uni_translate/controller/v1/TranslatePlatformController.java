@@ -11,12 +11,13 @@ import net.todream.uni_translate.uni_translate.dto.TranslatePlatformAddPlatformD
 import net.todream.uni_translate.uni_translate.dto.TranslatePlatformUpdatePlatformDto;
 import net.todream.uni_translate.uni_translate.entity.TranslateConf;
 import net.todream.uni_translate.uni_translate.service.TranslatePlatformService;
+import net.todream.uni_translate.uni_translate.vo.TranslatePlatformGetListVo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -46,8 +47,18 @@ public class TranslatePlatformController {
     
     @Operation(summary = "获取配置列表")
     @GetMapping("/getList")
-    public Result<List<TranslateConf>> getList() {
-        return Result.success(tPlatformService.getList());
+    public Result<List<TranslatePlatformGetListVo>> getList() {
+        List<TranslateConf> confList = tPlatformService.getList();
+        List<TranslatePlatformGetListVo> voList = new ArrayList<TranslatePlatformGetListVo>();
+        for (TranslateConf translateConf : confList) {
+            voList.add(new TranslatePlatformGetListVo() {{
+                setId(translateConf.getId());
+                setName(translateConf.getName());
+                setPlatform(translateConf.getPlatform());
+                setLevel(translateConf.getLevel());
+            }});
+        }
+        return Result.success(voList);
     }
 
 }
