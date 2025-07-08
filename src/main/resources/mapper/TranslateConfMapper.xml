@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.todream.uni_translate.uni_translate.mapper.TranslateConfMapper">
+    <resultMap id="BaseResultMap" type="net.todream.uni_translate.uni_translate.entity.TranslateConf">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="conf" property="conf" />
+        <result column="platform" property="platform" />
+        <result column="level" property="level" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, conf, platform, level, create_time, update_time
+    </sql>
+
+    <insert id="insert" parameterType="net.todream.uni_translate.uni_translate.entity.TranslateConf">
+        INSERT INTO translate_conf (
+            name, conf, platform, level, create_time, update_time
+        )
+        VALUES (
+            #{ name },
+            #{ conf },
+            #{ platform },
+            #{ level },
+            #{ createTime },
+            #{ updateTime }
+        )
+    </insert>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM translate_conf
+        WHERE id = #{ id }
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="net.todream.uni_translate.uni_translate.entity.TranslateConf">
+        UPDATE translate_conf
+        SET
+            name = #{ name },
+            conf = #{ conf },
+            platform = #{ platform },
+            level = #{ level }
+        WHERE id = #{ id }
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM translate_conf
+        WHERE id = #{ id }
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM translate_conf
+    </select>
+</mapper>
