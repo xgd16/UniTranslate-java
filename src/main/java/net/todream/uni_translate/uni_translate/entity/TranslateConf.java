@@ -1,6 +1,5 @@
 package net.todream.uni_translate.uni_translate.entity;
 
-import java.util.Optional;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

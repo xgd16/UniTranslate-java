@@ -25,10 +25,8 @@ public class TranslatePlatformServiceImpl implements TranslatePlatformService {
 
     @Override
     public void updateById(TranslatePlatformUpdatePlatformDto data) {
-        System.out.println(data);
         TranslateConf entity = new TranslateConf();
         BeanUtils.copyProperties(data, entity);
-        System.out.println(entity);
         translateConfMapper.updateByPrimaryKey(entity);
     }
 

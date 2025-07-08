@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import net.todream.uni_translate.uni_translate.dto.Result;
 import net.todream.uni_translate.uni_translate.dto.TranslatePlatformAddPlatformDto;
 import net.todream.uni_translate.uni_translate.dto.TranslatePlatformUpdatePlatformDto;
 import net.todream.uni_translate.uni_translate.service.TranslatePlatformService;
@@ -25,16 +26,16 @@ public class TranslatePlatformController {
 
     @Operation(summary = "添加配置")
     @PostMapping("/add")
-    public String add(@RequestBody TranslatePlatformAddPlatformDto data) {
+    public Result<Object> add(@RequestBody TranslatePlatformAddPlatformDto data) {
         tPlatformService.addPlatform(data);
-        return "success";
+        return Result.success();
     } 
 
     @Operation(summary = "修改配置")
     @PostMapping("/update")
-    public String update(@RequestBody TranslatePlatformUpdatePlatformDto data) {
+    public Result<Object> update(@RequestBody TranslatePlatformUpdatePlatformDto data) {
         tPlatformService.updateById(data);
-        return "success";
+        return Result.success();
     }
 
 }

@@ -8,14 +8,14 @@ import io.swagger.v3.oas.models.info.Info;
 
 @Configuration
 public class SwaggerConfig {
-    
+
     @Bean
     public OpenAPI springOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
                         .title("UniTranslate")
                         .description("聚合翻译平台")
-                        .version("1.0.0")
-                    );
+                        .version("1.0.0"));
     }
+
 }
