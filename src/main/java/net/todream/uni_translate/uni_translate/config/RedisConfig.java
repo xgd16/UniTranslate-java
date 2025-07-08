@@ -16,6 +16,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -45,16 +46,27 @@ public class RedisConfig {
         template.afterPropertiesSet();
         return template;
     }
-    @Bean(name = "agentCache")
-    public CacheManager cacheManager(RedisConnectionFactory factory) {
-        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(30)) // 设置缓存过期时间
-                .serializeValuesWith(RedisSerializationContext.SerializationPair
-                        .fromSerializer(new GenericJackson2JsonRedisSerializer(getObjectMapperConfig()))); // 使用 JSON 序列化
-
+    @Bean
+    @Primary
+    public CacheManager defaultCacheManager(RedisConnectionFactory factory) {
         return RedisCacheManager.builder(factory)
-                .cacheDefaults(config)
+                .cacheDefaults(getRedisCacheConfiguration(Duration.ofMinutes(10)))
                 .build();
+    }
+
+    @Bean
+    public CacheManager longCacheManager(RedisConnectionFactory factory) {
+        return RedisCacheManager.builder(factory)
+                .cacheDefaults(getRedisCacheConfiguration(Duration.ofHours(1)))
+                .build();
+    }
+
+    private final RedisCacheConfiguration getRedisCacheConfiguration(Duration ttl) {
+        // 配置 Redis 缓存
+        return RedisCacheConfiguration.defaultCacheConfig()
+                .serializeValuesWith(RedisSerializationContext.SerializationPair
+                        .fromSerializer(new GenericJackson2JsonRedisSerializer(getObjectMapperConfig())))
+                .entryTtl(ttl); // 设置缓存过期时间为 30 分钟
     }
 
 

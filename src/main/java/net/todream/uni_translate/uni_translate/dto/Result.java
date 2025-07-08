@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 @Data
 public class Result<T> {
-    private String code;
+    private Integer code;
     private String message;
     private T data;
     private Long timestamp;
@@ -17,14 +17,14 @@ public class Result<T> {
 
     public static <T> Result<T> success(T data) {
         Result<T> result = new Result<>();
-        result.setCode("200");
+        result.setCode(200);
         result.setMessage("Success");
         result.setData(data);
         result.setTimestamp(System.currentTimeMillis());
         return result;
     }
     
-    public static <T> Result<T> error(String code, String message) {
+    public static <T> Result<T> error(Integer code, String message) {
         Result<T> result = new Result<>();
         result.setCode(code);
         result.setMessage(message);

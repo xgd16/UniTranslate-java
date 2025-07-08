@@ -9,10 +9,16 @@ import jakarta.annotation.Resource;
 import net.todream.uni_translate.uni_translate.dto.Result;
 import net.todream.uni_translate.uni_translate.dto.TranslatePlatformAddPlatformDto;
 import net.todream.uni_translate.uni_translate.dto.TranslatePlatformUpdatePlatformDto;
+import net.todream.uni_translate.uni_translate.entity.TranslateConf;
 import net.todream.uni_translate.uni_translate.service.TranslatePlatformService;
+
+import java.util.List;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 
 @RestController
@@ -36,6 +42,12 @@ public class TranslatePlatformController {
     public Result<Object> update(@RequestBody TranslatePlatformUpdatePlatformDto data) {
         tPlatformService.updateById(data);
         return Result.success();
+    }
+    
+    @Operation(summary = "获取配置列表")
+    @GetMapping("/getList")
+    public Result<List<TranslateConf>> getList() {
+        return Result.success(tPlatformService.getList());
     }
 
 }

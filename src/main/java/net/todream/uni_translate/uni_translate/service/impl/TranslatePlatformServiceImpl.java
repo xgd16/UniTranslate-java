@@ -1,6 +1,9 @@
 package net.todream.uni_translate.uni_translate.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.Resource;
@@ -28,6 +31,12 @@ public class TranslatePlatformServiceImpl implements TranslatePlatformService {
         TranslateConf entity = new TranslateConf();
         BeanUtils.copyProperties(data, entity);
         translateConfMapper.updateByPrimaryKey(entity);
+    }
+
+    @Override
+    @Cacheable(value = "translateConfCache", cacheManager = "longCacheManager")
+    public List<TranslateConf> getList() {
+        return translateConfMapper.selectAll();
     }
 
 }
