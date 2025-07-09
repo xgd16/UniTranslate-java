@@ -2,28 +2,21 @@ package net.todream.uni_translate.uni_translate.vo;
 
 import java.io.Serializable;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 public class TranslatePlatformGetListVo implements Serializable {
-    /**
-     * id
-     * @Primary Key
-     */
-    private Integer id;
 
-    /**
-     * name
-     */
+    @Schema(description="ID")
+    private Integer id; 
+
+    @Schema(description="名称")
     private String name;
 
-    /**
-     * platform
-     */
+    @Schema(description="平台")
     private String platform;
 
-    /**
-     * 翻译等级
-     */
+    @Schema(description="等级")
     private Integer level;
 }
