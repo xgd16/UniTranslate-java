@@ -87,6 +87,18 @@
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>2.19.1</version>
 		</dependency>
+		<!-- webflux http client -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+			<version>3.5.3</version>
+			   	<exclusions>
+					<exclusion>
+						<groupId>io.netty</groupId>
+						<artifactId>netty-resolver-dns-native-macos</artifactId>
+					</exclusion>
+    			</exclusions>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -48,6 +48,7 @@
         SELECT <include refid="Base_Column_List" />
         FROM translate_conf
         WHERE id = #{ id }
+        ORDER BY id DESC
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">

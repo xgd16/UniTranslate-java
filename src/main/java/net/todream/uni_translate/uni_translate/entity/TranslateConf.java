@@ -11,7 +11,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class TranslateConf extends BaseEntity {
+public class TranslateConf<T> extends BaseEntity {
     /**
      * id
      * @Primary Key
@@ -26,7 +26,7 @@ public class TranslateConf extends BaseEntity {
     /**
      * conf
      */
-    private Object conf;
+    private T conf;
 
     /**
      * platform
