@@ -2,6 +2,7 @@ package net.todream.uni_translate.uni_translate.service.impl;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.Resource;
@@ -22,6 +23,7 @@ public class TranslateServiceImpl implements TranslateService {
     private TranslateClientService googleClientService;
 
     @Override
+    @Cacheable(value = "translateCache", keyGenerator = "translateMd5PlatformCacheGen")
     public TranslateClientOutDto translate(TranslateClientInDto in) {
 
         List<TranslateConf> confList = translateConfMapper.selectAll();
@@ -38,7 +40,8 @@ public class TranslateServiceImpl implements TranslateService {
         return null;
     }
 
-    private TranslateClientOutDto selectTranslate(TranslateConf conf, TranslateClientInDto in) {
+    @Override
+    public TranslateClientOutDto selectTranslate(TranslateConf conf, TranslateClientInDto in) {
         switch (in.getPlatform()) {
             case "google":
                 return googleClientService.translate(conf, in);

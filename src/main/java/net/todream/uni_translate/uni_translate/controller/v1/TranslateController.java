@@ -24,7 +24,7 @@ public class TranslateController {
     private TranslateService translateService;
 
     @Operation(summary = "通用翻译")
-    @PostMapping("/")
+    @PostMapping("")
     public Result<TranslateClientOutDto> translate(@RequestBody TranslateClientInDto in) {
         TranslateClientOutDto out = translateService.translate(in);
         return Result.success(out);
