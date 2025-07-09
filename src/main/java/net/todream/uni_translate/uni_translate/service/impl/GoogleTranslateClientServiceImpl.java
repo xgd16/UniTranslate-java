@@ -6,6 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.annotation.Resource;
 import net.todream.uni_translate.uni_translate.dto.TranslateClientInDto;
 import net.todream.uni_translate.uni_translate.dto.TranslateClientOutDto;
 import net.todream.uni_translate.uni_translate.dto.TranslateConfGoogleDto;
@@ -13,21 +16,22 @@ import net.todream.uni_translate.uni_translate.dto.TranslateRespGoogleDto;
 import net.todream.uni_translate.uni_translate.entity.TranslateConf;
 import net.todream.uni_translate.uni_translate.service.TranslateClientService;
 
-@Service
+@Service("googleTranslateClient")
 public class GoogleTranslateClientServiceImpl implements TranslateClientService {
+
+    @Resource
+    private ObjectMapper objectMapper;
 
     @Override
     public TranslateClientOutDto translate(TranslateConf conf,TranslateClientInDto in) {
-        TranslateConfGoogleDto googleConf = (TranslateConfGoogleDto) conf.getConf();
-        // Create a WebClient instance with the base URL from the configuration
+        TranslateConfGoogleDto googleConf = objectMapper.convertValue(conf.getConf(), TranslateConfGoogleDto.class);
 
         HashMap<String, String> bodyValue = new HashMap<String, String>();
-        bodyValue.put("key", googleConf.getKey());
         bodyValue.put("target", in.getTo());
         bodyValue.put("source", in.getForm());
         bodyValue.put("q", in.getText());
 
-        TranslateRespGoogleDto resp = WebClient.create(googleConf.getUrl())
+        TranslateRespGoogleDto resp = WebClient.create(googleConf.getUrl() + "?key=" + googleConf.getKey())
             .post()
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(bodyValue)

@@ -10,5 +10,7 @@ public class TranslateClientInDto {
     private String to;
 
     private String text;
-    
+
+    private String platform;
+
 }
