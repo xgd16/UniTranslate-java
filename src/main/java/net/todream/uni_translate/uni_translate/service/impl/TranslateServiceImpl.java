@@ -1,5 +1,6 @@
 package net.todream.uni_translate.uni_translate.service.impl;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import net.todream.uni_translate.uni_translate.entity.TranslateConf;
 import net.todream.uni_translate.uni_translate.exception.TranslateException;
 import net.todream.uni_translate.uni_translate.mapper.TranslateConfMapper;
 import net.todream.uni_translate.uni_translate.service.TranslateClientService;
+import net.todream.uni_translate.uni_translate.service.TranslatePlatformService;
 import net.todream.uni_translate.uni_translate.service.TranslateService;
 
 @Service
@@ -27,6 +29,9 @@ public class TranslateServiceImpl implements TranslateService {
     @Resource(name = "googleTranslateClient")
     private TranslateClientService googleClientService;
 
+    @Resource
+    private TranslatePlatformService translatePlatformService;
+
     @Override
     @Cacheable(
         value = "translateCache", 
@@ -34,13 +39,16 @@ public class TranslateServiceImpl implements TranslateService {
         unless = "#result == null"
     )
     public TranslateClientOutDto translate(TranslateClientInDto in) {
-        List<TranslateConf> confList = translateConfMapper.selectAll();
+        // 获取配置
+        List<TranslateConf> confList = getConfigList(in.getPlatform(), true);
+        // 调用指定的翻译模式
 
+        
         for (TranslateConf translateConf : confList) {
             try {
                 return selectTranslate(translateConf, in);
             } catch (Exception e) {
-                logger.error("Error processing configuration: {}, {}", translateConf.getId(), e.getMessage(), e);
+                logger.error("Error processing configuration: {}, {}", translateConf.getId(), e.getMessage());
                 continue;
             }
         }
@@ -48,6 +56,15 @@ public class TranslateServiceImpl implements TranslateService {
         throw new TranslateException("没有可用的翻译配置");
     }
 
+    
+
+    /**
+     * 选择翻译平台进行翻译
+     * @param conf 翻译配置
+     * @param in 输入
+     * @return 翻译结果
+     * @throws TranslateException
+     */
     @Override
     public TranslateClientOutDto selectTranslate(TranslateConf conf, TranslateClientInDto in) {
         switch (in.getPlatform()) {
@@ -56,6 +73,38 @@ public class TranslateServiceImpl implements TranslateService {
             default:
                 return googleClientService.translate(conf, in);
         }
+    }
+
+    /**
+     * 获取配置列表
+     * @param platform 平台名称
+     * @param isFallbackEnabled 是否启用替代配置
+     * @return 配置列表
+     */
+    @Override
+    public List<TranslateConf> getConfigList(String platform, Boolean isFallbackEnabled) {
+        // 获取所有配置数据
+        List<TranslateConf> confList = translatePlatformService.getList();
+        // 判断是否只获取指定平台的配置
+        if (!platform.isEmpty() && !isFallbackEnabled) {
+            confList = confList.stream()
+                .filter(conf -> conf.getPlatform().equals(platform))
+                .toList();
+        }
+        // 判断是否启用替代配置
+        if (!platform.isEmpty() && isFallbackEnabled) {
+            confList = confList.stream()
+                .sorted((conf1, conf2) -> {
+                    if (conf1.getPlatform().equals(platform) && !conf2.getPlatform().equals(platform)) {
+                        return -1;
+                    } else if (!conf1.getPlatform().equals(platform) && conf2.getPlatform().equals(platform)) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }).toList();
+        }
+        return confList;
     }
 
 }

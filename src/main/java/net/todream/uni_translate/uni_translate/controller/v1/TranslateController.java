@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import net.todream.uni_translate.uni_translate.dto.Result;
 import net.todream.uni_translate.uni_translate.dto.TranslateClientInDto;
 import net.todream.uni_translate.uni_translate.dto.TranslateClientOutDto;
 import net.todream.uni_translate.uni_translate.service.TranslateService;
+import net.todream.uni_translate.uni_translate.vo.Result;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -7,11 +7,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import net.todream.uni_translate.uni_translate.config.LanguageConfig;
-import net.todream.uni_translate.uni_translate.dto.Result;
 import net.todream.uni_translate.uni_translate.dto.TranslatePlatformAddPlatformDto;
 import net.todream.uni_translate.uni_translate.dto.TranslatePlatformUpdatePlatformDto;
 import net.todream.uni_translate.uni_translate.entity.TranslateConf;
 import net.todream.uni_translate.uni_translate.service.TranslatePlatformService;
+import net.todream.uni_translate.uni_translate.vo.Result;
 import net.todream.uni_translate.uni_translate.vo.TranslatePlatformGetListVo;
 
 import java.util.ArrayList;

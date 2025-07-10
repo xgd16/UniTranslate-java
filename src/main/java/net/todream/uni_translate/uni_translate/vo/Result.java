@@ -1,4 +1,4 @@
-package net.todream.uni_translate.uni_translate.dto;
+package net.todream.uni_translate.uni_translate.vo;
 
 import lombok.Data;
 
