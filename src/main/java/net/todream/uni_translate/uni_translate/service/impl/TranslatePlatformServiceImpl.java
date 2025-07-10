@@ -21,6 +21,10 @@ public class TranslatePlatformServiceImpl implements TranslatePlatformService {
     private TranslateConfMapper translateConfMapper;
 
     @Override
+    @CacheEvict(
+        value = "translateConfCache", 
+        key = "'translatePlatformList'"
+    )
     public void addPlatform(TranslatePlatformAddPlatformDto data) {
         TranslateConf entity = new TranslateConf();
         BeanUtils.copyProperties(data, entity);
@@ -28,6 +32,10 @@ public class TranslatePlatformServiceImpl implements TranslatePlatformService {
     }
 
     @Override
+    @CacheEvict(
+        value = "translateConfCache", 
+        key = "'translatePlatformList'"
+    )
     public void updateById(TranslatePlatformUpdatePlatformDto data) {
         TranslateConf entity = new TranslateConf();
         BeanUtils.copyProperties(data, entity);

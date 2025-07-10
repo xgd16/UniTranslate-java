@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import net.todream.uni_translate.uni_translate.config.LanguageConfig;
 import net.todream.uni_translate.uni_translate.dto.Result;
 import net.todream.uni_translate.uni_translate.dto.TranslatePlatformAddPlatformDto;
 import net.todream.uni_translate.uni_translate.dto.TranslatePlatformUpdatePlatformDto;
@@ -15,6 +16,7 @@ import net.todream.uni_translate.uni_translate.vo.TranslatePlatformGetListVo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +32,9 @@ public class TranslatePlatformController {
 
     @Resource
     private TranslatePlatformService tPlatformService;
+
+    @Resource
+    private LanguageConfig languageConfig;
 
     @Operation(summary = "添加配置")
     @PostMapping("/add")
@@ -66,6 +71,12 @@ public class TranslatePlatformController {
     public Result<Object> delete(Integer id) {
         tPlatformService.deleteById(id);
         return Result.success();
+    }
+
+    @Operation(summary = "获取语言列表")
+    @GetMapping("/getLanguageList")
+    public Result<ConcurrentHashMap<String, ConcurrentHashMap<String, String>>> getLanguageList(String platform) {
+        return Result.success(languageConfig.getAllLangList());
     }
 
 }
