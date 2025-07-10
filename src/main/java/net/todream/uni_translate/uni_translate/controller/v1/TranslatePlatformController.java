@@ -61,4 +61,11 @@ public class TranslatePlatformController {
         return Result.success(voList);
     }
 
+    @Operation(summary = "删除配置")
+    @PostMapping("/delete")
+    public Result<Object> delete(Integer id) {
+        tPlatformService.deleteById(id);
+        return Result.success();
+    }
+
 }

@@ -12,5 +12,7 @@ public interface TranslatePlatformService {
 
     public void updateById(TranslatePlatformUpdatePlatformDto data);
 
+    public void deleteById(Integer id);
+
     public List<TranslateConf> getList();
 }

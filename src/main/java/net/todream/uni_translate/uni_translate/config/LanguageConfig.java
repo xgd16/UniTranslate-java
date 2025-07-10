@@ -44,6 +44,9 @@ public class LanguageConfig {
      * @return
      */
     public String getLang(String platform, String langCode) {
+        if (languageMap.isEmpty()) {
+            throw new LanguageException("No languages available");
+        }
         if (!languageMap.containsKey(platform)) {
             throw new LanguageException(platform + " is not supported");
         }
@@ -52,6 +55,33 @@ public class LanguageConfig {
             throw new LanguageException("Language code " + langCode + " is not supported for platform " + platform);
         }
         return langCodeMap.get(langCode);
+    }
+
+    /**
+     * 获取指定平台的所有语言列表
+     * @param platform 平台
+     * @throws LanguageException 如果平台不支持
+     * @return 语言列表
+     */
+    public Map<String, String> getLangListByPlatform(String platform) {
+        if (languageMap.isEmpty()) {
+            throw new LanguageException("No languages available");
+        }
+        if (!languageMap.containsKey(platform)) {
+            throw new LanguageException(platform + " is not supported");
+        }
+        return languageMap.get(platform);
+    }
+
+    /**
+     * 获取所有平台的语言列表
+     * @return 所有平台的语言列表
+     */
+    public ConcurrentHashMap<String, ConcurrentHashMap<String, String>> getAllLangList() {
+        if (languageMap.isEmpty()) {
+            throw new LanguageException("No languages available");
+        }
+        return languageMap;
     }
 
 }

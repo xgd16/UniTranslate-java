@@ -3,6 +3,7 @@ package net.todream.uni_translate.uni_translate.service.impl;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +35,23 @@ public class TranslatePlatformServiceImpl implements TranslatePlatformService {
     }
 
     @Override
-    @Cacheable(value = "translateConfCache", cacheManager = "longCacheManager")
+    @Cacheable(
+        value = "translateConfCache", 
+        key = "'translatePlatformList'", 
+        cacheManager = "longCacheManager",
+        unless = "#result == null || #result.isEmpty()"
+    )
     public List<TranslateConf> getList() {
         return translateConfMapper.selectAll();
+    }
+
+    @Override
+    @CacheEvict(
+        value = "translateConfCache", 
+        key = "'translatePlatformList'"
+    )
+    public void deleteById(Integer id) {
+        translateConfMapper.deleteByPrimaryKey(id);
     }
 
 }
