@@ -1,6 +1,5 @@
 package net.todream.uni_translate.uni_translate.service.impl;
 
-import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,6 +15,7 @@ import net.todream.uni_translate.uni_translate.exception.TranslateException;
 import net.todream.uni_translate.uni_translate.mapper.TranslateConfMapper;
 import net.todream.uni_translate.uni_translate.service.TranslateClientService;
 import net.todream.uni_translate.uni_translate.service.TranslatePlatformService;
+import net.todream.uni_translate.uni_translate.service.TranslateSelectService;
 import net.todream.uni_translate.uni_translate.service.TranslateService;
 
 @Service
@@ -26,11 +26,11 @@ public class TranslateServiceImpl implements TranslateService {
 
     private static final Logger logger = LoggerFactory.getLogger(TranslateServiceImpl.class);
 
-    @Resource(name = "googleTranslateClient")
-    private TranslateClientService googleClientService;
-
     @Resource
     private TranslatePlatformService translatePlatformService;
+
+    @Resource
+    private TranslateSelectService translateSelectService;
 
     @Override
     @Cacheable(
@@ -46,7 +46,7 @@ public class TranslateServiceImpl implements TranslateService {
         
         for (TranslateConf translateConf : confList) {
             try {
-                return selectTranslate(translateConf, in);
+                return translateSelectService.tanslate(translateConf, in);
             } catch (Exception e) {
                 logger.error("Error processing configuration: {}, {}", translateConf.getId(), e.getMessage());
                 continue;
@@ -54,25 +54,6 @@ public class TranslateServiceImpl implements TranslateService {
         }
         logger.error("No available translation configuration found for input: {}", in);
         throw new TranslateException("没有可用的翻译配置");
-    }
-
-    
-
-    /**
-     * 选择翻译平台进行翻译
-     * @param conf 翻译配置
-     * @param in 输入
-     * @return 翻译结果
-     * @throws TranslateException
-     */
-    @Override
-    public TranslateClientOutDto selectTranslate(TranslateConf conf, TranslateClientInDto in) {
-        switch (in.getPlatform()) {
-            case "google":
-                return googleClientService.translate(conf, in);
-            default:
-                return googleClientService.translate(conf, in);
-        }
     }
 
     /**
