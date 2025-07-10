@@ -14,6 +14,7 @@ import net.todream.uni_translate.uni_translate.dto.TranslateClientOutDto;
 import net.todream.uni_translate.uni_translate.dto.TranslateConfGoogleDto;
 import net.todream.uni_translate.uni_translate.dto.TranslateRespGoogleDto;
 import net.todream.uni_translate.uni_translate.entity.TranslateConf;
+import net.todream.uni_translate.uni_translate.exception.TranslateException;
 import net.todream.uni_translate.uni_translate.service.TranslateClientService;
 
 @Service("googleTranslateClient")
@@ -39,7 +40,7 @@ public class GoogleTranslateClientServiceImpl implements TranslateClientService 
             .bodyToMono(TranslateRespGoogleDto.class).block();
 
         if (resp == null || resp.getData() == null || resp.getData().getTranslations() == null || resp.getData().getTranslations().length == 0) {
-            throw new RuntimeException("Translation failed or no translations found");
+            throw new TranslateException("Translation failed or no translations found");
         }
 
         TranslateClientOutDto out = new TranslateClientOutDto();
