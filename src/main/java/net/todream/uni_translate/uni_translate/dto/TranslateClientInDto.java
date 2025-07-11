@@ -13,6 +13,13 @@ public class TranslateClientInDto {
 
     private String platform;
 
-    private String mode;
+    private String mode = "levelDesc"; // 默认翻译模式为 levelDesc
+
+    public void setMode(String mode) {
+        // 检查空值或空字符串
+        if (mode == null || mode.trim().isEmpty()) {
+            this.mode = "levelDesc"; // 重置为默认值
+        }
+    }
 
 }
