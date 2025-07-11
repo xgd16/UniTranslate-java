@@ -13,4 +13,6 @@ public class TranslateClientInDto {
 
     private String platform;
 
+    private String mode;
+
 }

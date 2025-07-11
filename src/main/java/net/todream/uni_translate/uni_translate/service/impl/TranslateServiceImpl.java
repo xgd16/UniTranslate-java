@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.Resource;
@@ -13,8 +14,8 @@ import net.todream.uni_translate.uni_translate.dto.TranslateClientOutDto;
 import net.todream.uni_translate.uni_translate.entity.TranslateConf;
 import net.todream.uni_translate.uni_translate.exception.TranslateException;
 import net.todream.uni_translate.uni_translate.mapper.TranslateConfMapper;
+import net.todream.uni_translate.uni_translate.service.TranslateModeService;
 import net.todream.uni_translate.uni_translate.service.TranslatePlatformService;
-import net.todream.uni_translate.uni_translate.service.TranslateSelectService;
 import net.todream.uni_translate.uni_translate.service.TranslateService;
 
 @Service
@@ -29,7 +30,7 @@ public class TranslateServiceImpl implements TranslateService {
     private TranslatePlatformService translatePlatformService;
 
     @Resource
-    private TranslateSelectService translateSelectService;
+    private ApplicationContext applicationContext;
 
     @Override
     @Cacheable(
@@ -41,18 +42,14 @@ public class TranslateServiceImpl implements TranslateService {
         // 获取配置
         List<TranslateConf> confList = getConfigList(in.getPlatform(), true);
         // 调用指定的翻译模式
-
-        
-        for (TranslateConf translateConf : confList) {
-            try {
-                return translateSelectService.tanslate(translateConf, in);
-            } catch (Exception e) {
-                logger.error("Error processing configuration: {}, {}", translateConf.getId(), e.getMessage());
-                continue;
-            }
+        if (!applicationContext.containsBean(in.getMode())) {
+            throw new TranslateException("翻译模式不存在: " + in.getMode());
         }
-        logger.error("No available translation configuration found for input: {}", in);
-        throw new TranslateException("没有可用的翻译配置");
+        TranslateModeService mode = applicationContext.getBean(in.getMode(), TranslateModeService.class);
+        // 初始化
+        mode.init(confList);
+        // 执行翻译
+        return mode.translate(in);
     }
 
     /**
