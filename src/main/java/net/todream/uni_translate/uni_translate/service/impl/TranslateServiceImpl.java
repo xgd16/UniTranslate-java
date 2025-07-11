@@ -13,7 +13,6 @@ import net.todream.uni_translate.uni_translate.dto.TranslateClientOutDto;
 import net.todream.uni_translate.uni_translate.entity.TranslateConf;
 import net.todream.uni_translate.uni_translate.exception.TranslateException;
 import net.todream.uni_translate.uni_translate.mapper.TranslateConfMapper;
-import net.todream.uni_translate.uni_translate.service.TranslateClientService;
 import net.todream.uni_translate.uni_translate.service.TranslatePlatformService;
 import net.todream.uni_translate.uni_translate.service.TranslateSelectService;
 import net.todream.uni_translate.uni_translate.service.TranslateService;

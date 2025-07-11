@@ -18,7 +18,7 @@ import net.todream.uni_translate.uni_translate.exception.TranslateException;
 import net.todream.uni_translate.uni_translate.service.TranslateClientService;
 
 @Service("googleTranslateClient")
-public class GoogleTranslateClientServiceImpl implements TranslateClientService {
+public class TranslateClientGoogleServiceImpl implements TranslateClientService {
 
     @Resource
     private ObjectMapper objectMapper;
