@@ -15,6 +15,8 @@ public class TranslateClientInDto {
 
     private String mode = "levelDesc"; // 默认翻译模式为 levelDesc
 
+    private Boolean isFallbackEnabled = true; // 是否启用替代配置
+
     public void setMode(String mode) {
         // 检查空值或空字符串
         if (mode == null || mode.trim().isEmpty()) {

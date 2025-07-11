@@ -27,7 +27,6 @@ public class TranslateSelectServiceImpl implements TranslateSelectService {
     public TranslateClientOutDto tanslate(TranslateConf conf, TranslateClientInDto in) {
         switch (in.getPlatform()) {
             case "google":
-                return googleClientService.translate(conf, in);
             default:
                 return googleClientService.translate(conf, in);
         }
