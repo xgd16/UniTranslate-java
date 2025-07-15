@@ -29,11 +29,11 @@ public class TranslateServiceImpl implements TranslateService {
     private ApplicationContext applicationContext;
 
     @Override
-    // @Cacheable(
-    //     value = "translateCache", 
-    //     keyGenerator = "translateMd5PlatformCacheGen",
-    //     unless = "#result == null"
-    // )
+    @Cacheable(
+        value = "translateCache", 
+        keyGenerator = "translateMd5PlatformCacheGen",
+        unless = "#result == null"
+    )
     public TranslateClientOutDto translate(TranslateClientInDto in) {
         // 获取配置
         List<TranslateConf> confList = getConfigList(in.getPlatform(), true);
