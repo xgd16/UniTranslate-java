@@ -52,7 +52,6 @@ public class TranslateClientYouDaoServiceImpl implements TranslateClientService 
         bodyValue.add("sign", sign);
         bodyValue.add("curtime", curtime);
         bodyValue.add("q", in.getText());
-        System.out.println(bodyValue);
 
         TranslateRespYouDaoDto resp = httpApiClient.httpClient(Duration.ofMillis(youdaoConf.getTimeout()))
             .post()
