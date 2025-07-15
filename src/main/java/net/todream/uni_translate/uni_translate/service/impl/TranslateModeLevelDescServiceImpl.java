@@ -14,6 +14,9 @@ import net.todream.uni_translate.uni_translate.exception.TranslateException;
 import net.todream.uni_translate.uni_translate.service.TranslateModeService;
 import net.todream.uni_translate.uni_translate.service.TranslateSelectService;
 
+/**
+ * 翻译模式：按照等级排序 (支持指定平台)
+ */
 @Service("levelDesc")
 @Scope("prototype")
 public class TranslateModeLevelDescServiceImpl implements TranslateModeService  {

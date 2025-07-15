@@ -42,6 +42,10 @@ public class TranslateServiceImpl implements TranslateService {
             throw new TranslateException("翻译模式不存在: " + in.getMode());
         }
         TranslateModeService mode = applicationContext.getBean(in.getMode(), TranslateModeService.class);
+        // 判断在指定平台时指定的翻译规则模式是否支持指定平台
+        if (!in.getPlatform().isEmpty() && !mode.transPlatform()) {
+            throw new TranslateException("当前翻译规则模式不支持，指定翻译平台请不要传递参数 platform 或 更换翻译规则模式");
+        }
         // 初始化
         mode.init(confList, in);
         // 执行翻译
