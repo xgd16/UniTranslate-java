@@ -10,7 +10,6 @@ public class LanguageFileInitializer {
     public static void ensureJsonFileExists() {
         Path externalPath = Paths.get(LANGUAGE_FILE);
         if (Files.exists(externalPath)) {
-            System.out.println(LANGUAGE_FILE + " already exists.");
             return;
         }
 

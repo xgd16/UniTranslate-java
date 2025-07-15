@@ -44,7 +44,6 @@ public class TranslateModeLevelDescServiceImpl implements TranslateModeService  
                 throw new TranslateException("翻译模式 " + MODE_NAME + " 执行失败: " + e.getMessage() + "请求: " + in.getText(), e);
             }
         }
-        
         throw new TranslateException("没有可用的翻译配置，无法执行翻译请求: " + in.getText());
     }
     
