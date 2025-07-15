@@ -1,10 +1,10 @@
 package net.todream.uni_translate.uni_translate.service.impl;
 
+import java.time.Duration;
 import java.util.HashMap;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,6 +15,7 @@ import net.todream.uni_translate.uni_translate.dto.TranslateConfGoogleDto;
 import net.todream.uni_translate.uni_translate.dto.TranslateRespGoogleDto;
 import net.todream.uni_translate.uni_translate.entity.TranslateConf;
 import net.todream.uni_translate.uni_translate.exception.TranslateException;
+import net.todream.uni_translate.uni_translate.factory.HttpClientFactory;
 import net.todream.uni_translate.uni_translate.service.TranslateClientService;
 
 @Service("googleTranslateClient")
@@ -22,6 +23,9 @@ public class TranslateClientGoogleServiceImpl implements TranslateClientService 
 
     @Resource
     private ObjectMapper objectMapper;
+
+    @Resource
+    private HttpClientFactory httpApiClient;
 
     @Override
     public TranslateClientOutDto translate(TranslateConf conf,TranslateClientInDto in) {
@@ -31,9 +35,10 @@ public class TranslateClientGoogleServiceImpl implements TranslateClientService 
         bodyValue.put("target", in.getTo());
         bodyValue.put("source", in.getForm());
         bodyValue.put("q", in.getText());
-
-        TranslateRespGoogleDto resp = WebClient.create(googleConf.getUrl() + "?key=" + googleConf.getKey())
+        
+        TranslateRespGoogleDto resp = httpApiClient.httpClient(Duration.ofMillis(googleConf.getTimeout()))
             .post()
+            .uri(googleConf.getUrl() + "?key=" + googleConf.getKey())
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(bodyValue)
             .retrieve()
