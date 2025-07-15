@@ -23,7 +23,7 @@ public class TranslateController {
     @Resource
     private TranslateService translateService;
 
-    @Operation(summary = "通用翻译")
+    @Operation(summary = "单文本翻译")
     @PostMapping("")
     public Result<TranslateClientOutDto> translate(@RequestBody TranslateClientInDto in) {
         TranslateClientOutDto out = translateService.translate(in);
