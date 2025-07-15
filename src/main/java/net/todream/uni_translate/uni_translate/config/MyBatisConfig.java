@@ -1,11 +1,12 @@
 package net.todream.uni_translate.uni_translate.config;
 
-import net.todream.uni_translate.uni_translate.entity.TimestampInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import net.todream.uni_translate.uni_translate.entity.TimestampInterceptor;
 
 @Configuration
 public class MyBatisConfig {

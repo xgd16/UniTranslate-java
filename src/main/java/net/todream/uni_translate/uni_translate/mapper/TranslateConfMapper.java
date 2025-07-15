@@ -1,8 +1,10 @@
 
 package net.todream.uni_translate.uni_translate.mapper;
 
-import net.todream.uni_translate.uni_translate.entity.TranslateConf;
 import org.apache.ibatis.annotations.Mapper;
+
+import net.todream.uni_translate.uni_translate.entity.TranslateConf;
+
 import java.util.List;
 
 @Mapper
