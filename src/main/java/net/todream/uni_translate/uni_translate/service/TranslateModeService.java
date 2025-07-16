@@ -8,10 +8,12 @@ import net.todream.uni_translate.uni_translate.entity.TranslateConf;
 
 public interface TranslateModeService {
 
-    public void init(List<TranslateConf> conf);
+    public void init(List<TranslateConf> conf, TranslateClientInDto in );
 
     public String getModeName();
 
     public TranslateClientOutDto translate(TranslateClientInDto in);
 
+    // 是否支持指定平台翻译
+    public Boolean transPlatform();
 }

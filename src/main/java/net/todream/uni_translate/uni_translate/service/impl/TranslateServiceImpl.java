@@ -2,8 +2,6 @@ package net.todream.uni_translate.uni_translate.service.impl;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -23,8 +21,6 @@ public class TranslateServiceImpl implements TranslateService {
 
     @Resource
     private TranslateConfMapper translateConfMapper;
-
-    private static final Logger logger = LoggerFactory.getLogger(TranslateServiceImpl.class);
 
     @Resource
     private TranslatePlatformService translatePlatformService;
@@ -46,8 +42,12 @@ public class TranslateServiceImpl implements TranslateService {
             throw new TranslateException("翻译模式不存在: " + in.getMode());
         }
         TranslateModeService mode = applicationContext.getBean(in.getMode(), TranslateModeService.class);
+        // 判断在指定平台时指定的翻译规则模式是否支持指定平台
+        if (!in.getPlatform().isEmpty() && !mode.transPlatform()) {
+            throw new TranslateException("当前翻译规则模式不支持，指定翻译平台请不要传递参数 platform 或 更换翻译规则模式");
+        }
         // 初始化
-        mode.init(confList);
+        mode.init(confList, in);
         // 执行翻译
         return mode.translate(in);
     }
@@ -67,19 +67,6 @@ public class TranslateServiceImpl implements TranslateService {
             confList = confList.stream()
                 .filter(conf -> conf.getPlatform().equals(platform))
                 .toList();
-        }
-        // 判断是否启用替代配置
-        if (!platform.isEmpty() && isFallbackEnabled) {
-            confList = confList.stream()
-                .sorted((conf1, conf2) -> {
-                    if (conf1.getPlatform().equals(platform) && !conf2.getPlatform().equals(platform)) {
-                        return -1;
-                    } else if (!conf1.getPlatform().equals(platform) && conf2.getPlatform().equals(platform)) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                }).toList();
         }
         return confList;
     }

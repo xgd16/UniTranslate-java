@@ -10,4 +10,6 @@ public class TranslateClientOutDto {
     private String detectedSourceLanguage;
     // 目标语言
     private String targetLanguage;
+
+    private String platform;
 }

@@ -31,7 +31,7 @@ public class TranslateClientGoogleServiceImpl implements TranslateClientService 
     public TranslateClientOutDto translate(TranslateConf conf,TranslateClientInDto in) {
         TranslateConfGoogleDto googleConf = objectMapper.convertValue(conf.getConf(), TranslateConfGoogleDto.class);
 
-        HashMap<String, String> bodyValue = new HashMap<String, String>();
+        HashMap<String, String> bodyValue = new HashMap<>();
         bodyValue.put("target", in.getTo());
         bodyValue.put("source", in.getForm());
         bodyValue.put("q", in.getText());
@@ -53,8 +53,9 @@ public class TranslateClientGoogleServiceImpl implements TranslateClientService 
         var data = resp.getData().getTranslations()[0];
 
         out.setTranslatedText(data.getTranslatedText());
-        out.setDetectedSourceLanguage(data.getDetectedSourceLanguage());
+        out.setDetectedSourceLanguage(in.getForm().isEmpty() ? data.getDetectedSourceLanguage() : in.getForm());
         out.setTargetLanguage(in.getTo());
+        out.setPlatform(in.getPlatform());
 
         return out;
     }
