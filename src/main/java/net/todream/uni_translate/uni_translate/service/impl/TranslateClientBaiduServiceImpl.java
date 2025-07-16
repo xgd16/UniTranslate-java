@@ -26,10 +26,13 @@ public class TranslateClientBaiduServiceImpl implements TranslateClientService {
     @Resource
     private HttpClientFactory httpApiClient;
 
-    private TranslateConfBaiduDto confBaiduDto;
-
-    private String getSign(String text, String salt) {
-        return Common.md5(confBaiduDto.getAppId() + text + salt + confBaiduDto.getAppKey());
+    private String getSign(
+            String appid,
+            String appKey,
+            String text,
+            String salt
+    ) {
+        return Common.md5(appid + text + salt + appKey);
     }
 
     private String getSalt() {
@@ -39,7 +42,7 @@ public class TranslateClientBaiduServiceImpl implements TranslateClientService {
 
     @Override
     public TranslateClientOutDto translate(TranslateConf conf, TranslateClientInDto in) {
-        confBaiduDto = objectMapper.convertValue(conf.getConf(), TranslateConfBaiduDto.class);
+        TranslateConfBaiduDto confBaiduDto = objectMapper.convertValue(conf.getConf(), TranslateConfBaiduDto.class);
 
         String salt = getSalt();
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -48,7 +51,12 @@ public class TranslateClientBaiduServiceImpl implements TranslateClientService {
         map.add("to", in.getTo());
         map.add("appid", confBaiduDto.getAppId());
         map.add("salt", salt);
-        map.add("sign", getSign(in.getText(), salt));
+        map.add("sign", getSign(
+                confBaiduDto.getAppId(),
+                confBaiduDto.getAppKey(),
+                in.getText(),
+                salt
+        ));
 
         TranslateRespBaiduDto resp = httpApiClient
                 .httpClient(Duration.ofMillis(confBaiduDto.getTimeout()))
