@@ -54,9 +54,7 @@ public class TranslateServiceImpl implements TranslateService {
         // 初始化
         mode.init(confList, in);
         // 执行翻译
-        TranslateClientOutDto out = mode.translate(in);
-        // kafkaProducerService.send(TranslateTopicEnum.TRANSLATE_RESULT.getTopic(), out);
-        return out;
+        return mode.translate(in);
     }
 
     /**
