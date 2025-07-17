@@ -45,14 +45,14 @@ public class LanguageConfig {
      */
     public String getLang(String platform, String langCode) {
         if (languageMap.isEmpty()) {
-            throw new LanguageException("No languages available");
+            throw new LanguageException("没有可用的语言。");
         }
         if (!languageMap.containsKey(platform)) {
-            throw new LanguageException(platform + " is not supported");
+            throw new LanguageException("不支持的翻译平台 " + platform);
         }
         ConcurrentHashMap<String, String> langCodeMap = languageMap.get(platform);
         if (!langCodeMap.containsKey(langCode)) {
-            throw new LanguageException("Language code " + langCode + " is not supported for platform " + platform);
+            throw new LanguageException("平台 " + platform + " 不支持 " + langCode);
         }
         return langCodeMap.get(langCode);
     }

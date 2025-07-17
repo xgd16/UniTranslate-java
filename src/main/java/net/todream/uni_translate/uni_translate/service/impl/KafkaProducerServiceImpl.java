@@ -2,20 +2,20 @@ package net.todream.uni_translate.uni_translate.service.impl;
 
 import java.util.concurrent.CompletableFuture;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.stereotype.Service;
 
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import net.todream.uni_translate.uni_translate.service.KafkaProducerService;
 
+@Slf4j
+@Service
 public class KafkaProducerServiceImpl implements KafkaProducerService {
 
     @Resource
     private KafkaTemplate<String, Object> kafkaTemplate;
-
-    private static final Logger logger = LoggerFactory.getLogger(KafkaProducerServiceImpl.class);
 
     @Override
     public void send(String topic, Object obj) {
@@ -24,9 +24,9 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
         // 处理成功和失败
         future.whenComplete((result, ex) -> {
             if (ex == null) {
-                logger.info("发送消息成功：" + result.getRecordMetadata());
+                log.info("发送消息成功：" + result.getRecordMetadata());
             } else {
-                logger.error("发送消息失败：" + ex.getMessage());
+                log.error("发送消息失败：" + ex.getMessage());
             }
         });
     }
@@ -38,9 +38,9 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
         // 处理成功和失败
         future.whenComplete((result, ex) -> {
             if (ex == null) {
-                logger.info("发送消息成功：" + result.getRecordMetadata());
+                log.info("发送消息成功：" + result.getRecordMetadata());
             } else {
-                logger.error("发送消息失败：" + ex.getMessage());
+                log.error("发送消息失败：" + ex.getMessage());
             }
         });
     }

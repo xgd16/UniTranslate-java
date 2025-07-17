@@ -10,8 +10,10 @@ import jakarta.annotation.Resource;
 import net.todream.uni_translate.uni_translate.dto.TranslateClientInDto;
 import net.todream.uni_translate.uni_translate.dto.TranslateClientOutDto;
 import net.todream.uni_translate.uni_translate.entity.TranslateConf;
+import net.todream.uni_translate.uni_translate.enums.TranslateTopicEnum;
 import net.todream.uni_translate.uni_translate.exception.TranslateException;
 import net.todream.uni_translate.uni_translate.mapper.TranslateConfMapper;
+import net.todream.uni_translate.uni_translate.service.KafkaProducerService;
 import net.todream.uni_translate.uni_translate.service.TranslateModeService;
 import net.todream.uni_translate.uni_translate.service.TranslatePlatformService;
 import net.todream.uni_translate.uni_translate.service.TranslateService;
@@ -27,6 +29,9 @@ public class TranslateServiceImpl implements TranslateService {
 
     @Resource
     private ApplicationContext applicationContext;
+
+    // @Resource
+    // private KafkaProducerService kafkaProducerService;
 
     @Override
     @Cacheable(
@@ -49,7 +54,9 @@ public class TranslateServiceImpl implements TranslateService {
         // 初始化
         mode.init(confList, in);
         // 执行翻译
-        return mode.translate(in);
+        TranslateClientOutDto out = mode.translate(in);
+        // kafkaProducerService.send(TranslateTopicEnum.TRANSLATE_RESULT.getTopic(), out);
+        return out;
     }
 
     /**
