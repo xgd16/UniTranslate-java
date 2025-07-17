@@ -28,9 +28,6 @@ public class TranslateServiceImpl implements TranslateService {
     @Resource
     private ApplicationContext applicationContext;
 
-    // @Resource
-    // private KafkaProducerService kafkaProducerService;
-
     @Override
     @Cacheable(
         value = "translateCache",
