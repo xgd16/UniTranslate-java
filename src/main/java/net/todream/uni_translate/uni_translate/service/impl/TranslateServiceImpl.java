@@ -10,10 +10,8 @@ import jakarta.annotation.Resource;
 import net.todream.uni_translate.uni_translate.dto.TranslateClientInDto;
 import net.todream.uni_translate.uni_translate.dto.TranslateClientOutDto;
 import net.todream.uni_translate.uni_translate.entity.TranslateConf;
-import net.todream.uni_translate.uni_translate.enums.TranslateTopicEnum;
 import net.todream.uni_translate.uni_translate.exception.TranslateException;
 import net.todream.uni_translate.uni_translate.mapper.TranslateConfMapper;
-import net.todream.uni_translate.uni_translate.service.KafkaProducerService;
 import net.todream.uni_translate.uni_translate.service.TranslateModeService;
 import net.todream.uni_translate.uni_translate.service.TranslatePlatformService;
 import net.todream.uni_translate.uni_translate.service.TranslateService;
@@ -35,7 +33,7 @@ public class TranslateServiceImpl implements TranslateService {
 
     @Override
     @Cacheable(
-        value = "translateCache", 
+        value = "translateCache",
         keyGenerator = "translateMd5PlatformCacheGen",
         unless = "#result == null"
     )
