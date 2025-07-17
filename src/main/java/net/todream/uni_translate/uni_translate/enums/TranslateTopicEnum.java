@@ -8,7 +8,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum TranslateTopicEnum {
 
-    TRANSLATE_RESULT("translate_result");
+    TRANSLATE_RETURN("translate_return"),
+
+    TRANSLATE_EXCEPTION("translate_excption");
 
     private final String topic;
 
