@@ -1,14 +1,19 @@
 package net.todream.uni_translate.uni_translate.utils;
 
 import java.time.Duration;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.annotation.Resource;
 import net.todream.uni_translate.uni_translate.dto.TranslateClientInDto;
 import net.todream.uni_translate.uni_translate.dto.TranslateClientOutDto;
+import net.todream.uni_translate.uni_translate.exception.TranslateException;
+import net.todream.uni_translate.uni_translate.mapper.CacheMapper;
 
 @Component
 public class TranslateCacheUtils {
@@ -19,6 +24,12 @@ public class TranslateCacheUtils {
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Resource
+    private CacheMapper cacheMapper;
+
+    @Resource
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * 翻译缓存实现
@@ -31,7 +42,17 @@ public class TranslateCacheUtils {
         String keyName = getKeyName(md5);
         Object outObj = redisTemplate.opsForValue().get(keyName);
         if (outObj == null) {
-            out = fn.get();
+            Optional<String> dbOut = cacheMapper.getCacheContent(md5);
+            if (dbOut.isEmpty()) {
+                out = fn.get();
+            } else {
+                try {
+                    out = objectMapper.readValue(dbOut.get(), TranslateClientOutDto.class);
+                    out.setIsCache(true);
+                } catch (Exception e) {
+                    throw new TranslateException("解析数据库缓存失败", e);
+                }
+            }
             redisTemplate.opsForValue().set(keyName, out, Duration.ofSeconds(30 * 60));
             return out;
         }

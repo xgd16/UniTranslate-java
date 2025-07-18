@@ -36,10 +36,8 @@ public class TranslateServiceAspect {
     public Object aroundTranslate(ProceedingJoinPoint joinPoint) throws Throwable {
         TranslateClientInDto argsIn = (TranslateClientInDto) joinPoint.getArgs()[0];
         TranslateClientOutDto out = (TranslateClientOutDto) joinPoint.proceed();
-        System.out.println("OUT 参数: " + out);
 
         TranslateWithReturnInDto in = new TranslateWithReturnInDto();
-
         in.setIn(argsIn);
         in.setOut(out);
         kafkaProducerService.send(TranslateTopicEnum.TRANSLATE_RETURN.getTopic(), in);
