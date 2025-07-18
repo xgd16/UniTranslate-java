@@ -33,9 +33,9 @@ public class TranslateClientGoogleServiceImpl implements TranslateClientService 
 
         HashMap<String, String> bodyValue = new HashMap<>();
         bodyValue.put("target", in.getTo());
-        bodyValue.put("source", in.getForm());
+        bodyValue.put("source", in.getFromAuto2EmptyString());
         bodyValue.put("q", in.getText());
-        
+
         TranslateRespGoogleDto resp = httpApiClient.httpClient(Duration.ofMillis(googleConf.getTimeout()))
             .post()
             .uri(googleConf.getUrl() + "?key=" + googleConf.getKey())
@@ -53,7 +53,7 @@ public class TranslateClientGoogleServiceImpl implements TranslateClientService 
         var data = resp.getData().getTranslations()[0];
 
         out.setTranslatedText(data.getTranslatedText());
-        out.setDetectedSourceLanguage(in.getForm().isEmpty() ? data.getDetectedSourceLanguage() : in.getForm());
+        out.setDetectedSourceLanguage(in.getFrom().isEmpty() ? data.getDetectedSourceLanguage() : in.getFrom());
         out.setTargetLanguage(in.getTo());
         out.setPlatform(in.getPlatform());
 

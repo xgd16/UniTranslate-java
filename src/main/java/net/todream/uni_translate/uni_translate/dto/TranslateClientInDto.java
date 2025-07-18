@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class TranslateClientInDto {
     
-    private String form;
+    private String from;
 
     private String to;
 
@@ -22,6 +22,18 @@ public class TranslateClientInDto {
         if (mode == null || mode.trim().isEmpty()) {
             this.mode = "levelDesc"; // 重置为默认值
         }
+    }
+
+    public void setFromEmptyString() {
+        from = "";
+    }
+
+    public void setFromAutoString() {
+        from = "auto";
+    }
+
+    public String getFromAuto2EmptyString() {
+        return from.equals("auto") ? "" : from;
     }
 
 }

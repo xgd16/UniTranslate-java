@@ -12,6 +12,7 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler(NullPointerException.class)
     public String handleNullPointerException(NullPointerException e) {
+        e.printStackTrace();
         return "NullPointerException: " + e.getMessage();
     }
 

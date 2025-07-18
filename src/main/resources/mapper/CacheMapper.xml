@@ -3,36 +3,34 @@
 <mapper namespace="net.todream.uni_translate.uni_translate.mapper.CacheMapper">
     <resultMap id="BaseResultMap" type="net.todream.uni_translate.uni_translate.entity.Cache">
         <id column="cache_id" property="cacheId" />
-        <result column="form" property="form" />
-        <result column="to" property="to" />
+        <result column="from" property="from" />
+        <result column="`to`" property="to" />
         <result column="text" property="text" />
         <result column="platform" property="platform" />
-        <result column="result" property="result" />
+        <result column="result" property="result" typeHandler="net.todream.uni_translate.uni_translate.config.ObjectTypeHandler"/>
         <result column="check_code" property="checkCode" />
-        <result column="check_code_platform" property="checkCodePlatform" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        cache_id, form, to, text, platform, result, create_time, update_time
+        cache_id, from, to, text, platform, result, create_time, update_time
     </sql>
 
     <!-- insert -->
     <insert id="insert" parameterType="net.todream.uni_translate.uni_translate.entity.Cache">
         INSERT INTO cache (
-            form, to, text, platform, result, check_code, check_code_platform, create_time, update_time
+            `from`, `to`, text, platform, result, check_code, create_time, update_time
         )
         VALUES (
-            #{ form },
-            #{ to },
-            #{ text },
-            #{ platform },
-            #{ result },
-            #{ check_code },
-            #{ check_code_platform },
-            #{ createTime },
-            #{ updateTime }
+            #{from},
+            #{to},
+            #{text},
+            #{platform},
+            #{result, typeHandler=net.todream.uni_translate.uni_translate.config.ObjectTypeHandler},
+            #{checkCode},
+            #{createTime},
+            #{updateTime}
         )
     </insert>
 </mapper>

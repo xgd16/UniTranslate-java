@@ -19,12 +19,12 @@ public class CacheGenConfig {
                 if (param != null && param instanceof TranslateClientInDto) {
                     StringBuilder keyBody = new StringBuilder();
                     TranslateClientInDto in = (TranslateClientInDto) param;
-                    String form = in.getForm();
-                    if (form.isEmpty()) {
-                        form = "auto";
+                    String from = in.getFrom();
+                    if (from.isEmpty()) {
+                        from = "auto";
                     }
                     keyBody.append(in.getPlatform()).append("_")
-                          .append(form).append("_")
+                          .append(from).append("_")
                           .append(in.getTo()).append("_")
                           .append(in.getText());
                     sb.append(keyBody.toString());

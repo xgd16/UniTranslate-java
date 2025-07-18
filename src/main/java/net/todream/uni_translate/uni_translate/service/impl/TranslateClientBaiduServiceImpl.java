@@ -47,7 +47,7 @@ public class TranslateClientBaiduServiceImpl implements TranslateClientService {
         String salt = getSalt();
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("q", in.getText());
-        map.add("from", in.getForm());
+        map.add("from", in.getFrom());
         map.add("to", in.getTo());
         map.add("appid", confBaiduDto.getAppId());
         map.add("salt", salt);
@@ -75,8 +75,9 @@ public class TranslateClientBaiduServiceImpl implements TranslateClientService {
         var data = resp.getTransResult().get(0);
         TranslateClientOutDto out = new TranslateClientOutDto();
         out.setTranslatedText(data.getDst());
-        out.setDetectedSourceLanguage(in.getForm());
+        out.setDetectedSourceLanguage(in.getFrom());
         out.setTargetLanguage(in.getTo());
+        out.setPlatform(in.getPlatform());
 
         return out;
     }

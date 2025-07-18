@@ -2,7 +2,6 @@ package net.todream.uni_translate.uni_translate.service.impl;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +50,8 @@ public class TranslateServiceImpl implements TranslateService {
             if (!in.getPlatform().isEmpty() && !mode.transPlatform()) {
                 throw new TranslateException("当前翻译规则模式不支持，指定翻译平台请不要传递参数 platform 或 更换翻译规则模式");
             }
+            // 不能为空
+            if (in.getFrom().isEmpty()) in.setFromAutoString();
             // 初始化
             mode.init(confList, in);
             // 执行翻译

@@ -3,6 +3,7 @@ package net.todream.uni_translate.uni_translate.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import net.todream.uni_translate.uni_translate.dto.TranslateClientOutDto;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -11,7 +12,7 @@ public class Cache extends BaseEntity{
     
     private Long cacheId;
 
-    private String form;
+    private String from;
 
     private String to;
 
@@ -19,10 +20,10 @@ public class Cache extends BaseEntity{
 
     private String platform;
 
-    private String result;
+    private TranslateClientOutDto result;
 
     private String checkCode;
 
-    private String checkCodePlatform;
+    private String checkCodeNoPlatform;
 
 }

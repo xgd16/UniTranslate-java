@@ -46,7 +46,7 @@ public class TranslateClientYouDaoServiceImpl implements TranslateClientService 
         MultiValueMap<String, String> bodyValue = new LinkedMultiValueMap<>();
         bodyValue.add("appKey", youdaoConf.getAppId());
         bodyValue.add("salt", salt);
-        bodyValue.add("from", in.getForm());
+        bodyValue.add("from", in.getFrom());
         bodyValue.add("to", in.getTo());
         bodyValue.add("signType", "v3");
         bodyValue.add("sign", sign);

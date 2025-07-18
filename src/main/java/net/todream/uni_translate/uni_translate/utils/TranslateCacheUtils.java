@@ -58,16 +58,16 @@ public class TranslateCacheUtils {
         StringBuilder sb = new StringBuilder();
         sb.append(TRANSLATE_CACHE_KEY_PREFIX).append(":");
         StringBuilder keyBody = new StringBuilder();
-        String form = in.getForm();
-        if (form.isEmpty()) {
-            form = "auto";
+        String from = in.getFrom();
+        if (from.isEmpty()) {
+            from = "auto";
         }
         if (calcPlatform) {
             keyBody.append(in.getPlatform()).append("_");
             sb.append(in.getPlatform()).append(":");
         }
 
-        keyBody.append(form).append("_")
+        keyBody.append(from).append("_")
                 .append(in.getTo()).append("_")
                 .append(in.getText());
 

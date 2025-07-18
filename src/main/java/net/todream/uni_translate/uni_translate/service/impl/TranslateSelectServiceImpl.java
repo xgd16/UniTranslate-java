@@ -32,10 +32,10 @@ public class TranslateSelectServiceImpl implements TranslateSelectService {
     public TranslateClientOutDto tanslate(TranslateConf conf, TranslateClientInDto in) {
         // 对请求语言Code进行对应转换
         String platform = in.getPlatform().toLowerCase();
-        String formCode = in.getForm();
+        String formCode = in.getFrom();
         if (!formCode.isEmpty() && !formCode.equals("auto")) {
-            formCode = languageConfig.getLang(platform, in.getForm());
-            in.setForm(formCode);
+            formCode = languageConfig.getLang(platform, in.getFrom());
+            in.setFrom(formCode);
         }
     
         String toCode = languageConfig.getLang(platform, in.getTo());
