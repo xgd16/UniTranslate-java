@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="net.todream.uni_translate.uni_translate.entity.TranslateConf">
         <id column="id" property="id" />
         <result column="name" property="name" />
-        <result column="conf" property="conf" />
+        <result column="conf" property="conf" typeHandler="net.todream.uni_translate.uni_translate.config.ObjectTypeHandler" />
         <result column="platform" property="platform" />
         <result column="level" property="level" />
         <result column="create_time" property="createTime" />
@@ -21,7 +21,7 @@
         )
         VALUES (
             #{ name },
-            #{ conf },
+            #{ conf, typeHandler=net.todream.uni_translate.uni_translate.config.ObjectTypeHandler },
             #{ platform },
             #{ level },
             #{ createTime },
@@ -38,7 +38,7 @@
         UPDATE translate_conf
         SET
             name = #{ name },
-            conf = #{ conf },
+            conf = #{ conf, typeHandler=net.todream.uni_translate.uni_translate.config.ObjectTypeHandler },
             platform = #{ platform },
             level = #{ level }
         WHERE id = #{ id }

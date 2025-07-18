@@ -34,4 +34,7 @@
         )
     </insert>
 
+    <select id="getCacheContent">
+        SELECT result FROM cache WHERE check_code = #{checkCode} LIMIT 1
+    </select>
 </mapper>

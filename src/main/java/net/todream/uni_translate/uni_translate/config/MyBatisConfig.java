@@ -21,8 +21,8 @@ public class MyBatisConfig {
             configuration.addInterceptor(timestampInterceptor);
             
             // 注册 ObjectTypeHandler
-            TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry();
-            typeHandlerRegistry.register(Object.class, ObjectTypeHandler.class);
+            // TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry();
+            // typeHandlerRegistry.register(Object.class, ObjectTypeHandler.class);
         };
     }
 } 

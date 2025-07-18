@@ -13,7 +13,7 @@ public interface CacheMapper {
 
     int insert(Cache record);
 
-    @Select("SELECT result FROM cache WHERE check_code = #{checkCode} LIMIT 1")
+    // @Select("SELECT result FROM cache WHERE check_code = #{checkCode} LIMIT 1")
     Optional<String> getCacheContent(@Param("checkCode") String checkCode);
 
 }

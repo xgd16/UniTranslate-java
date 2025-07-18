@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.MappedTypes;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -22,7 +21,6 @@ import java.sql.SQLException;
  * 
  * @author uni_translate
  */
-@MappedTypes(Object.class)
 public class ObjectTypeHandler extends BaseTypeHandler<Object> {
     
     /**
@@ -46,6 +44,7 @@ public class ObjectTypeHandler extends BaseTypeHandler<Object> {
         try {
             // 将 Object 转换为 JSON 字符串并设置到 PreparedStatement
             ps.setString(i, objectMapper.writeValueAsString(parameter));
+            System.out.println("测试1111");
         } catch (JsonProcessingException e) {
             // 如果 JSON 序列化失败，抛出 SQLException
             throw new SQLException("Error converting object to JSON", e);
@@ -65,6 +64,7 @@ public class ObjectTypeHandler extends BaseTypeHandler<Object> {
     public Object getNullableResult(ResultSet rs, String columnName) throws SQLException {
         // 从 ResultSet 中获取 JSON 字符串
         String value = rs.getString(columnName);
+          System.out.println("测试2222");
         // 解析 JSON 字符串为 Object
         return parseObject(value);
     }
@@ -82,6 +82,7 @@ public class ObjectTypeHandler extends BaseTypeHandler<Object> {
     public Object getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         // 从 ResultSet 中获取 JSON 字符串
         String value = rs.getString(columnIndex);
+        System.out.println("测试3333");
         // 解析 JSON 字符串为 Object
         return parseObject(value);
     }
@@ -99,6 +100,7 @@ public class ObjectTypeHandler extends BaseTypeHandler<Object> {
     public Object getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         // 从 CallableStatement 中获取 JSON 字符串
         String value = cs.getString(columnIndex);
+        System.out.println("测试4444");
         // 解析 JSON 字符串为 Object
         return parseObject(value);
     }
@@ -111,6 +113,7 @@ public class ObjectTypeHandler extends BaseTypeHandler<Object> {
      * @return 解析后的 Java Object，如果解析失败则返回原始字符串
      */
     private Object parseObject(String value) {
+        System.out.println("测试5555");
         // 如果值为 null 或空字符串，直接返回 null
         if (value == null || value.trim().isEmpty()) {
             return null;
