@@ -37,6 +37,7 @@ public class TranslateCacheUtils {
         }
         redisTemplate.expire(keyName, TRANSLATE_CACHE_EXPIRE_SEC);
         out = (TranslateClientOutDto) outObj;
+        out.setIsCache(true);
         return out;
     }
 

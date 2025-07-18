@@ -12,4 +12,6 @@ public class TranslateClientOutDto {
     private String targetLanguage;
 
     private String platform;
+
+    private Boolean isCache = false;
 }

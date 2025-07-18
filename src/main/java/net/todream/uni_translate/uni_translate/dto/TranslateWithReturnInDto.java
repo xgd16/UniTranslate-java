@@ -12,5 +12,6 @@ public class TranslateWithReturnInDto {
     private TranslateClientInDto in;
 
     private TranslateClientOutDto out;
+
     
 }

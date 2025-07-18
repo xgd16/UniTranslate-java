@@ -24,8 +24,16 @@ public class TranslateCacheConsumer {
     @KafkaListener(topics = "translate_return", groupId = "translate_return_group")
     public void translateWithReturn(TranslateWithReturnInDto in, Acknowledgment ack) {
         log.info("收到翻译返回对象: {}", in);
-        String checkCode = translateCacheUtils.getMd5(in.getIn(), true);
+        // 判断是否需要持久化到数据库
+        if (!in.getOut().getIsCache()) {
+            cache2Store(in);
+        }
 
+        ack.acknowledge(); // 手动提交 offset
+    }
+
+    private void cache2Store(TranslateWithReturnInDto in) {
+        String checkCode = translateCacheUtils.getMd5(in.getIn(), true);
         Cache data = new Cache();
         data.setCheckCode(checkCode);
         data.setFrom(in.getIn().getFrom().isEmpty() ? "auto" : in.getIn().getFrom());
@@ -35,7 +43,7 @@ public class TranslateCacheConsumer {
         data.setResult(in.getOut());
 
         cacheMapper.insert(data);
-        ack.acknowledge(); // 手动提交 offset
     }
 
 }
+
