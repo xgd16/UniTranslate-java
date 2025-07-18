@@ -15,6 +15,7 @@ import net.todream.uni_translate.uni_translate.mapper.TranslateConfMapper;
 import net.todream.uni_translate.uni_translate.service.TranslateModeService;
 import net.todream.uni_translate.uni_translate.service.TranslatePlatformService;
 import net.todream.uni_translate.uni_translate.service.TranslateService;
+import net.todream.uni_translate.uni_translate.utils.TranslateCacheUtils;
 
 @Service
 public class TranslateServiceImpl implements TranslateService {
@@ -28,28 +29,33 @@ public class TranslateServiceImpl implements TranslateService {
     @Resource
     private ApplicationContext applicationContext;
 
+    @Resource
+    private TranslateCacheUtils translateCacheUtils;
+
     @Override
-    @Cacheable(
-        value = "translateCache",
-        keyGenerator = "translateMd5PlatformCacheGen",
-        unless = "#result == null"
-    )
+    // @Cacheable(
+    //     value = "translateCache",
+    //     keyGenerator = "translateMd5PlatformCacheGen",
+    //     unless = "#result == null"
+    // )
     public TranslateClientOutDto translate(TranslateClientInDto in) {
-        // 获取配置
-        List<TranslateConf> confList = getConfigList(in.getPlatform(), true);
-        // 调用指定的翻译模式
-        if (!applicationContext.containsBean(in.getMode())) {
-            throw new TranslateException("翻译模式不存在: " + in.getMode());
-        }
-        TranslateModeService mode = applicationContext.getBean(in.getMode(), TranslateModeService.class);
-        // 判断在指定平台时指定的翻译规则模式是否支持指定平台
-        if (!in.getPlatform().isEmpty() && !mode.transPlatform()) {
-            throw new TranslateException("当前翻译规则模式不支持，指定翻译平台请不要传递参数 platform 或 更换翻译规则模式");
-        }
-        // 初始化
-        mode.init(confList, in);
-        // 执行翻译
-        return mode.translate(in);
+        return translateCacheUtils.getOrSet(translateCacheUtils.getMd5(in, true), () -> {
+            // 获取配置
+            List<TranslateConf> confList = getConfigList(in.getPlatform(), true);
+            // 调用指定的翻译模式
+            if (!applicationContext.containsBean(in.getMode())) {
+                throw new TranslateException("翻译模式不存在: " + in.getMode());
+            }
+            TranslateModeService mode = applicationContext.getBean(in.getMode(), TranslateModeService.class);
+            // 判断在指定平台时指定的翻译规则模式是否支持指定平台
+            if (!in.getPlatform().isEmpty() && !mode.transPlatform()) {
+                throw new TranslateException("当前翻译规则模式不支持，指定翻译平台请不要传递参数 platform 或 更换翻译规则模式");
+            }
+            // 初始化
+            mode.init(confList, in);
+            // 执行翻译
+            return mode.translate(in);
+        });
     }
 
     /**
